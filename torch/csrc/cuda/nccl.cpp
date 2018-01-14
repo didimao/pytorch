@@ -6,7 +6,6 @@
 
 #include <unordered_map>
 #include <sstream>
-#include <nccl.h>
 #include <ATen/ATen.h>
 #include <THC/THC.h>
 
