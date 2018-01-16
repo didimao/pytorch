@@ -319,7 +319,8 @@ static PyObject * THPTensor_(pynew)(PyTypeObject *type, PyObject *args, PyObject
     real *data = tensor->storage->data;
 #else
     size_t numel = THTensor_(numel)(LIBRARY_STATE tensor);
-    std::unique_ptr<load_real> data_guard(new load_real[numel]);
+    auto data_deleter=[&](load_real* data){delete[] data;};
+    std::unique_ptr<load_real, decltype(data_deleter)> data_guard(new load_real[numel], data_deleter);
     load_real *data = data_guard.get();
 #endif
     THPObjectPtr final_sequence;
